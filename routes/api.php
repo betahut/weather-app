@@ -1,5 +1,6 @@
 <?php
 
+use Zttp\Zttp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/weather', function () {
+    $apiKey = config('services.darksky.key');
+    $apiUrl = config('services.darksky.url');
+
+    $lat = request('lat');
+    $lng = request('lng');
+
+    return $response = Zttp::get("$apiUrl/$apiKey/$lat,$lng?units=ca")->json();
 });
